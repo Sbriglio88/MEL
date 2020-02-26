@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Modified for Cassiopea project
+test di update della brach customizzata
 """
 
 import xlwings as xw
