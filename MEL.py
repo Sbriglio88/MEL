@@ -40,8 +40,8 @@ def structure_by_package(mel):
     
     mel['WP']=mel['WP'].str.replace('K10024-','',regex=False)   
     mel['WP']=mel['WP'].str[:2]
-    mel.drop(columns=['Level'],inplace=True)    
-    mel.to_excel('packages_MEL02.xlsx')
+    #mel.drop(columns=['Level'],inplace=True)    
+    mel.to_excel('packages_MEL.xlsx')
     return mel
 
 def consolidate_saipem_mel(mel):
@@ -95,11 +95,13 @@ def consolidate_mel(mel,delivery=False):
                   'Part No.':row['Part No.'],
                   'Delivery':row['Delivery'],
                   'Equipment Description':row['Equipment Description'],
+                  'Company Work Package':row['Company Work Package'],
                   'WP':row['WP']}
     else:
         for i, row in mel.iterrows():
             c_MEL[(str(row['Part No.']))]={'Quantity':mel['Quantity'][mel['Part No.'].astype(str)==str(row['Part No.'])].sum(),
                   'Part No.':row['Part No.'],
+                  'Company Work Package':row['Company Work Package'],                
                   'Equipment Description':row['Equipment Description']}
         
     c_MEL=pd.DataFrame(c_MEL).T  
@@ -142,19 +144,14 @@ def rev_check(me1l,mel2):
     c_mel.to_excel('track_changes.xlsx')
 
 
-saipemmel=pd.read_excel('Saipem_MEL.xlsx')
-saipemmel=consolidate_saipem_mel(saipemmel)
-mel=pd.read_excel('MEL02.xlsm', sheet_name='Cabaca MEL')
-melcons=consolidate_mel(mel)
 
-
-mel1=pd.read_excel('packages_MEL.xlsx')
-mel2=pd.read_excel('packages_MEL02.xlsx')
-
-saipemmel['Available Quantity']=melcons['Quantity'][melcons['Part No.'].isin(saipemmel['Part No.'])]
-saipemmel.to_excel('Saipem_Request_Gap_Analysis.xlsx')
 #removed1=mel1[~mel1[mel2.index]]
-
-"""
-
-"""
+if __name__ == "__main__":
+    mel=pd.read_excel('082140DGEAS0051_EXDE01.xlsm', sheet_name='LIST')
+    melcons=structure_by_package(mel)
+    #melcons.to_excel("consolidated_MEL.xlsx")
+    
+    
+   # mel1=pd.read_excel('packages_MEL.xlsx')
+   #mel2=pd.read_excel('packages_MEL02.xlsx')
+    
