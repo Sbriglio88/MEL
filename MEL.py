@@ -24,7 +24,7 @@ def structure_by_package(mel):
     WP='00'
     l={}
     mel['Level 1','Level 2','Level 3','Level 4']=''
-    mel['WP']=mel['Level'].str.replace('.','',regex=True)  
+    mel['WP']=mel['Level'].astype(str)  
     for i,row in mel.iterrows():
         print (WP)
         if (type(row['WP Activity/ Part No.']) is str) and (string in row['WP Activity/ Part No.']) :
